@@ -1,7 +1,3 @@
-import 'package:checkin/model/controller_get_data.dart';
-import 'package:checkin/model/global.dart';
-import 'package:dio/dio.dart';
-
 class CheckinGuest {
   final String checkinId;
   final int seq;
@@ -44,53 +40,53 @@ class CheckinGuest {
       'updateTime': updateTime,
     };
   }
-
-  Future<List<CheckinGuest>> fetchData() async {
-    try {
-      var url = '$SERVER/CheckIn/GetAll';
-      final response = await dio.get(
-        url,
-        options: Options(headers: {"Content-Type": "application/json"}),
-      );
-      switch (response.statusCode) {
-        case 200:
-          // EasyLoading.dismiss();
-          var body = response.data;
-          List<CheckinGuest> data = body
-              .map((data) => CheckinGuest.fromJson(data))
-              .toList();
-          print('Get all id');
-          int numAll = body.length;
-          int numCheck = 0;
-          int numChecked = 0;
-          int numP_checked = 0;
-          int numP_check = 0;
-
-          for (var list in data) {
-            if (list.isChecked == true) {
-              numChecked = numChecked + 1;
-              numP_checked = numP_checked + list.numP;
-            } else {
-              numCheck = numCheck + 1;
-              numP_check = numP_check + list.numP;
-            }
-            // numAll = numAll + 1;
-          }
-          checkinController.updateNumCheck(
-            numAll: numAll,
-            numCheck: numCheck,
-            numChecked: numChecked,
-            numP_checked: numP_checked,
-            numP_check: numP_check,
-          );
-          return data;
-        default:
-          // EasyLoading.dismiss();
-          throw Exception('Error: GetData ${response.statusCode}');
-      }
-    } on Exception catch (e) {
-      // EasyLoading.dismiss();
-      throw Exception('Error: $e GetData');
-    }
-  }
 }
+
+// Future<List<CheckinGuest>> fetchData() async {
+//   try {
+//     var url = '$SERVER/CheckIn/GetAll';
+//     final response = await dio.get(
+//       url,
+//       options: Options(headers: {"Content-Type": "application/json"}),
+//     );
+//     switch (response.statusCode) {
+//       case 200:
+//         // EasyLoading.dismiss();
+//         List<dynamic> body = response.data;
+//         List<CheckinGuest> data = body
+//             .map((data) => CheckinGuest.fromJson(data))
+//             .toList();
+//         print('Get all id');
+//         int numAll = body.length;
+//         int numCheck = 0;
+//         int numChecked = 0;
+//         int numP_checked = 0;
+//         int numP_check = 0;
+
+//         for (var list in data) {
+//           if (list.isChecked == true) {
+//             numChecked = numChecked + 1;
+//             numP_checked = numP_checked + list.numP;
+//           } else {
+//             numCheck = numCheck + 1;
+//             numP_check = numP_check + list.numP;
+//           }
+//           // numAll = numAll + 1;
+//         }
+//         checkinController.updateNumCheck(
+//           numAll: numAll,
+//           numCheck: numCheck,
+//           numChecked: numChecked,
+//           numP_checked: numP_checked,
+//           numP_check: numP_check,
+//         );
+//         return data;
+//       default:
+//         // EasyLoading.dismiss();
+//         throw Exception('Error: GetData ${response.statusCode}');
+//     }
+//   } on Exception catch (e) {
+//     // EasyLoading.dismiss();
+//     throw Exception('Error: $e GetData');
+//   }
+// }
